@@ -19,6 +19,7 @@ class MrBot extends Client {
         }
 
         this.config = require(this.requires.path.join(__dirname, "..", "storage", "config.json"));
+        this.functions = require(this.requires.path.join(__dirname, "functions", "utils.js"))(this);
         require('dotenv').config({ path: this.requires.path.join(__dirname, "..", "storage", ".env") });
 
         this.loadSlashCommands();

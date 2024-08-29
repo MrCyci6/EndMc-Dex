@@ -6,7 +6,7 @@ module.exports = {
 	},
 
 	async execute(client) {
-
+		
 		client.guilds.cache.forEach(guild => {
 			guild.commands.set(client.command);
 		})
