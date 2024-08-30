@@ -43,17 +43,22 @@ class MrBot extends Client {
             for (let file of commands) {
                 let command = (await import(`../slashcommands/${dir}/${file}`)).default;
 
-                if(!command.execute) {
-                    const subcommands = (await fs.readdir(`./slashcommands/${dir}/subcommands`)).filter(files => files.endsWith(".js"));
-                    command.data.options = [];
-                    command.executes = {};
-                    for(const sub of subcommands) {
-                        let subcommand = (await import(`../slashcommands/${dir}/subcommands/${sub}`)).default;
-                        command.data.options.push(subcommand.data)
-                        command.executes[subcommand.data.name] = subcommand.execute;
-                    }
+                if(command.execute) {
+                    this.commands.set(command.data.name, command);
+                    this.command.push(command.data);
+
+                    console.log(`[+] command : ${file.replace('.js', "")} ${command.data.name} [${dir}]`);
+                    break;
                 }
 
+                const subcommands = (await fs.readdir(`./slashcommands/${dir}/subcommands`)).filter(files => files.endsWith(".js"));
+                command.data.options = [];
+                command.executes = {};
+                for(const sub of subcommands) {
+                    let subcommand = (await import(`../slashcommands/${dir}/subcommands/${sub}`)).default;
+                    command.data.options.push(subcommand.data)
+                    command.executes[subcommand.data.name] = subcommand.execute;
+                }        
 
                 this.commands.set(command.data.name, command);
                 this.command.push(command.data);
