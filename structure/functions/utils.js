@@ -1,4 +1,4 @@
-module.exports = (client) => {
+export default (client) => {
 	return {
 		async get(url, options = {}) {
 			try {
@@ -19,8 +19,8 @@ module.exports = (client) => {
 		},
 
 		getBar(progress, length = 20) {
-			let percent = progress/100;
-			let filled = Math.round(length*percent);
+			const percent = progress/100;
+			const filled = Math.round(length*percent);
 			return String('🟧').repeat(filled) + String('⬛').repeat(length-filled)
 		},
 

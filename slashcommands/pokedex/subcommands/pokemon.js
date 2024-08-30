@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     data: {
         type: 1,
         name: 'pokemon',
@@ -15,30 +15,29 @@ module.exports = {
 
     async execute(client, interaction) {
 
-        let pokemon = interaction.options.getString("pokemon");
+        const pokemon = interaction.options.getString("pokemon");
         
         const nothing = new client.requires.Discord.EmbedBuilder()
             .setTitle(`${pokemon}`)
-            .setTitle("#ff0000")
+            .setColor("#ff0000")
             .setDescription(`This pokemon is not in our pokedex.`)
 
-        let generalData = await client.functions.get(`${client.config.api.pokeapi.url}/pokemon/${pokemon}`);
+        const generalData = await client.functions.get(`${client.config.api.pokeapi.url}/pokemon/${pokemon}`);
         if(!generalData) return interaction.reply({embeds: [nothing]});
 
-        let speciesData = await client.functions.get(generalData.species.url);
+        const speciesData = await client.functions.get(generalData.species.url);
         if(!speciesData) return interaction.reply({embeds: [nothing]});
 
-        let formData = await client.functions.get(generalData?.forms[0]?.url);
+        const formData = await client.functions.get(generalData?.forms[0]?.url);
 
-
-        let abilities = generalData.abilities ? generalData.abilities.map(ability => ability.ability.name) : ["None"];
-        let color = speciesData.color ? speciesData.name : "Invisible";
-        let captureRate = speciesData.capture_rate ? speciesData.capture_rate : "0"; 
-        let habitat = speciesData.habitat ? speciesData.habitat.name : "The earth.";
-        let types = generalData.types ? generalData.types.map(type => type.type.name) : ["None"];
-        let eggGroups = speciesData.egg_groups ? speciesData.egg_groups.map(group => group.name) : ["None"];
-        let id = generalData.id ? generalData.id : (formData ? formData.id : "0");
-        let title = `${generalData.name} | #${String(id).padStart(3, "0")}`;
+        const abilities = generalData.abilities ? generalData.abilities.map(ability => ability.ability.name) : ["None"];
+        const color = speciesData.color ? speciesData.name : "Invisible";
+        const captureRate = speciesData.capture_rate ? speciesData.capture_rate : "0"; 
+        const habitat = speciesData.habitat ? speciesData.habitat.name : "The earth.";
+        const types = generalData.types ? generalData.types.map(type => type.type.name) : ["None"];
+        const eggGroups = speciesData.egg_groups ? speciesData.egg_groups.map(group => group.name) : ["None"];
+        const id = generalData.id ? generalData.id : (formData ? formData.id : "0");
+        const title = `${generalData.name} | #${String(id).padStart(3, "0")}`;
 
         let embedHome = new client.requires.Discord.EmbedBuilder()
             .setTitle(`${title}`)
@@ -62,19 +61,18 @@ module.exports = {
             .setFooter({text: `HOME -> ${title}`})
         if(formData?.sprites?.front_default) embedHome.setThumbnail(formData.sprites.front_default)
 
-        let statsInfos = generalData.stats.map(stat => `**${stat.stat.name.toUpperCase()}** (${stat.base_stat})\n${client.functions.getBar(stat.base_stat)}`);
+        const statsInfos = generalData.stats.map(stat => `**${stat.stat.name.toUpperCase()}** (${stat.base_stat})\n${client.functions.getBar(stat.base_stat)}`);
         let embedStats = new client.requires.Discord.EmbedBuilder()
             .setTitle(`${title}`)
             .setColor("#ff0000")
             .setFooter({text: `STATS -> ${title}`})
             .setDescription(`\`❤️\` Base stats
 
-${statsInfos.join("\n\n")}
-`)    
+${statsInfos.join("\n\n")}`)
         if(formData?.sprites?.front_default) embedStats.setThumbnail(formData.sprites.front_default)
 
-        let _id = client.functions.randomString();
-        let stats = new client.requires.Discord.ActionRowBuilder()
+        const _id = client.functions.randomString();
+        const stats = new client.requires.Discord.ActionRowBuilder()
             .addComponents(
                 new client.requires.Discord.ButtonBuilder()
                     .setCustomId(`stats-${_id}`)
@@ -82,7 +80,7 @@ ${statsInfos.join("\n\n")}
                     .setStyle("Primary")
                     .setDisabled(false),
                 )        
-        let home = new client.requires.Discord.ActionRowBuilder()
+        const home = new client.requires.Discord.ActionRowBuilder()
             .addComponents(
                 new client.requires.Discord.ButtonBuilder()
                     .setCustomId(`home-${_id}`)

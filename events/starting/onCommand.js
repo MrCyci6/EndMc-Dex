@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	data: {
 		name: `interactionCreate`,
 		description: `When someone execute slash command`,
@@ -13,7 +13,7 @@ module.exports = {
 				if(cmd.execute) {
 					await cmd.execute(client, interaction);					
 				} else if(cmd.executes) {
-					let subcommand = interaction.options?._subcommand;
+					const subcommand = interaction.options?._subcommand;
 					if(subcommand) await cmd.executes[subcommand](client, interaction);
 				}
 			}
