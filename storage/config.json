@@ -1,1 +1,8 @@
-{}
+{
+	"api": {
+		"pokeapi": {
+			"url": "https://pokeapi.co/api/v2",
+			"key": ""
+		}
+	}
+}
